@@ -3,30 +3,274 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>HomeLink</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6f8;
+            color: #222;
+        }
+
+        header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .login {
+            text-decoration: none;
+            background: #111;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 20px;
+        }
+
+        .hero {
+            background: white;
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .search {
+            max-width: 650px;
+            margin: auto;
+            display: flex;
+            background: #f0f1f3;
+            border-radius: 30px;
+            padding: 5px;
+        }
+
+        .search input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 14px;
+            font-size: 16px;
+        }
+
+        .search button {
+            border: none;
+            background: #111;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .section {
+            padding: 30px 20px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .section h2 {
+            margin-bottom: 18px;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+        }
+
+        .category {
+            background: white;
+            padding: 22px 10px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 2px 7px rgba(0,0,0,0.06);
+        }
+
+        .category span {
+            display: block;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .nearby {
+            background: #111;
+            color: white;
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .nearby p {
+            margin: 10px 0 18px;
+            color: #ddd;
+        }
+
+        .nearby button {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        footer {
+            background: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .search {
+                flex-direction: column;
+                background: #f0f1f3;
+            }
+
+            .search button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
+<header>
+    <div class="logo">🌍 HomeLink</div>
+    <a href="#" class="login">Sign in</a>
+</header>
+
+<section class="hero">
+
     <h1>Welcome to HomeLink</h1>
 
-    <p>Connecting people, products, places, services and entertainment.</p>
+    <p>
+        Connect. Discover. Shop. Entertain. Earn.
+    </p>
 
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Marketplace</a>
-        <a href="#">Nearby</a>
-        <a href="#">Entertainment</a>
-        <a href="#">Services</a>
-        <a href="#">Earn</a>
-        <a href="#">Profile</a>
-    </nav>
+    <div class="search">
+        <input
+            type="text"
+            placeholder="Search products, people, businesses or places..."
+        >
 
-    <h2>Discover HomeLink</h2>
+        <button>Search</button>
+    </div>
 
-    <p>Find products, businesses, services and entertainment around you.</p>
+</section>
 
-    <button>Explore HomeLink</button>
+<section class="section">
+
+    <h2>Explore HomeLink</h2>
+
+    <div class="categories">
+
+        <div class="category">
+            <span>🛍️</span>
+            Marketplace
+        </div>
+
+        <div class="category">
+            <span>📍</span>
+            Nearby
+        </div>
+
+        <div class="category">
+            <span>🎬</span>
+            Entertainment
+        </div>
+
+        <div class="category">
+            <span>🎵</span>
+            Music
+        </div>
+
+        <div class="category">
+            <span>💼</span>
+            Services
+        </div>
+
+        <div class="category">
+            <span>📺</span>
+            Live
+        </div>
+
+        <div class="category">
+            <span>💰</span>
+            Earn
+        </div>
+
+        <div class="category">
+            <span>🤝</span>
+            Community
+        </div>
+
+    </div>
+
+</section>
+
+<section class="section">
+
+    <div class="nearby">
+
+        <h2>📍 Find What's Near You</h2>
+
+        <p>
+            Discover products, shops, restaurants, hotels,
+            services and entertainment around your location.
+        </p>
+
+        <button>Explore Nearby</button>
+
+    </div>
+
+</section>
+
+<section class="section">
+
+    <h2>What HomeLink Is About</h2>
+
+    <p>
+        HomeLink is being built as a global platform connecting
+        people, products, businesses, services, entertainment
+        and opportunities in one place.
+    </p>
+
+</section>
+
+<footer>
+
+    <p>© 2026 HomeLink. All rights reserved.</p>
+
+</footer>
 
 </body>
 </html>
