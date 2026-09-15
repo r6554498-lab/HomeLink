@@ -187,8 +187,12 @@
   <div class="logo">HomeLink</div>
 
   <nav>
-    <button class="signin-btn" onclick="openSignin()">Sign In</button>
-    <button class="signup-btn" onclick="openSignup()">Sign Up</button>
+    <button class="signin-btn" onclick="document.getElementById(`signupModal`).style.display=`flex`">
+      Sign Up
+    </button>
+    <button class="signup-btn" onclick="document.getElementById(`signinModal`).style.display=`flex`">
+      Sign Up
+    </button>
   </nav>
 </header>
 
