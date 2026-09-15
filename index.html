@@ -1,640 +1,481 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HomeLink</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeLink</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f6f8;
-            color: #222;
-        }
+    body {
+      background: #f5f6f8;
+      color: #222;
+    }
 
-        header {
-            background: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
+    header {
+      background: #111827;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
 
-        .logo {
-            font-size: 25px;
-            font-weight: bold;
-        }
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+    }
 
-        .auth-buttons {
-            display: flex;
-            gap: 8px;
-        }
+    nav button {
+      border: none;
+      padding: 10px 15px;
+      margin-left: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-        .auth-buttons button {
-            border: none;
-            padding: 10px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    .signin-btn {
+      background: white;
+      color: #111827;
+    }
 
-        .signin-btn {
-            background: white;
-        }
+    .signup-btn {
+      background: #2563eb;
+      color: white;
+    }
 
-        .signup-btn {
-            background: #111;
-            color: white;
-        }
+    .hero {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      text-align: center;
+      padding: 70px 20px;
+    }
 
-        .hero {
-            background: white;
-            text-align: center;
-            padding: 50px 20px;
-        }
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
 
-        .hero h1 {
-            font-size: 40px;
-            margin-bottom: 12px;
-        }
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
 
-        .hero p {
-            color: #666;
-            margin-bottom: 25px;
-        }
+    .search {
+      width: 90%;
+      max-width: 650px;
+      padding: 16px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+    }
 
-        .search {
-            max-width: 650px;
-            margin: auto;
-            display: flex;
-            background: #f0f1f3;
-            border-radius: 30px;
-            padding: 5px;
-        }
+    .section {
+      padding: 35px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
 
-        .search input {
-            flex: 1;
-            border: none;
-            outline: none;
-            background: transparent;
-            padding: 14px;
-            font-size: 16px;
-        }
+    .section h2 {
+      margin-bottom: 20px;
+    }
 
-        .search button {
-            border: none;
-            background: #111;
-            color: white;
-            padding: 12px 22px;
-            border-radius: 25px;
-            cursor: pointer;
-        }
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+    }
 
-        .section {
-            padding: 30px 20px;
-            max-width: 1100px;
-            margin: auto;
-        }
+    .category {
+      background: white;
+      padding: 25px 15px;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
 
-        .section h2 {
-            margin-bottom: 18px;
-        }
+    .category h3 {
+      margin-bottom: 8px;
+    }
 
-        .categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 12px;
-        }
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 1000;
+    }
 
-        .category {
-            background: white;
-            padding: 22px 10px;
-            text-align: center;
-            border-radius: 15px;
-            box-shadow: 0 2px 7px rgba(0,0,0,0.06);
-            cursor: pointer;
-        }
+    .modal-box {
+      background: white;
+      width: 100%;
+      max-width: 450px;
+      padding: 25px;
+      border-radius: 15px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
 
-        .category span {
-            display: block;
-            font-size: 30px;
-            margin-bottom: 8px;
-        }
+    .modal-box h2 {
+      margin-bottom: 20px;
+    }
 
-        .nearby {
-            background: #111;
-            color: white;
-            border-radius: 18px;
-            padding: 25px;
-        }
+    .modal-box input,
+    .modal-box select {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
 
-        .nearby p {
-            margin: 10px 0 18px;
-            color: #ddd;
-        }
+    .main-action {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-        .nearby button {
-            border: none;
-            padding: 12px 18px;
-            border-radius: 25px;
-            cursor: pointer;
-        }
+    .close {
+      float: right;
+      font-size: 25px;
+      cursor: pointer;
+    }
 
-        footer {
-            background: white;
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 20px;
-            color: #666;
-        }
+    .switch {
+      margin-top: 15px;
+      text-align: center;
+    }
 
-        /* POPUP */
+    .switch button {
+      border: none;
+      background: none;
+      color: #2563eb;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 200;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .modal-box {
-            max-width: 500px;
-            margin: 50px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            position: relative;
-        }
-
-        .close {
-            position: absolute;
-            right: 20px;
-            top: 15px;
-            font-size: 28px;
-            cursor: pointer;
-        }
-
-        .modal-box h2 {
-            margin-bottom: 10px;
-        }
-
-        .modal-box p {
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-top: 14px;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 13px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-        }
-
-        .submit-button {
-            width: 100%;
-            margin-top: 22px;
-            padding: 14px;
-            border: none;
-            border-radius: 25px;
-            background: #111;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .switch {
-            text-align: center;
-            margin-top: 18px;
-        }
-
-        .switch button {
-            border: none;
-            background: none;
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        @media (max-width: 600px) {
-
-            .hero h1 {
-                font-size: 30px;
-            }
-
-            .search {
-                flex-direction: column;
-                border-radius: 15px;
-            }
-
-            .search button {
-                width: 100%;
-            }
-
-            .auth-buttons button {
-                padding: 8px 10px;
-                font-size: 13px;
-            }
-        }
-    </style>
+    footer {
+      background: #111827;
+      color: white;
+      text-align: center;
+      padding: 25px;
+      margin-top: 30px;
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
+  <div class="logo">HomeLink</div>
 
-    <div class="logo">
-        🌍 HomeLink
-    </div>
-
-    <div class="auth-buttons">
-
-        <button
-            class="signin-btn"
-            onclick="openModal('signin')">
-            Sign in
-        </button>
-
-        <button
-            class="signup-btn"
-            onclick="openModal('signup')">
-            Sign up
-        </button>
-
-    </div>
-
+  <nav>
+    <button class="signin-btn" onclick="openSignin()">Sign In</button>
+    <button class="signup-btn" onclick="openSignup()">Sign Up</button>
+  </nav>
 </header>
 
-
 <section class="hero">
+  <h1>Welcome to HomeLink</h1>
+  <p>Marketplace, social network, entertainment and services — all in one place.</p>
 
-    <h1>Welcome to HomeLink</h1>
-
-    <p>
-        Connect. Discover. Shop. Entertain. Earn.
-    </p>
-
-    <div class="search">
-
-        <input
-            type="text"
-            placeholder="Search products, people, businesses or places..."
-        >
-
-        <button>
-            Search
-        </button>
-
-    </div>
-
+  <input
+    class="search"
+    type="text"
+    placeholder="Search products, businesses, services and people..."
+  >
 </section>
-
 
 <section class="section">
+  <h2>Explore HomeLink</h2>
 
-    <h2>Explore HomeLink</h2>
+  <div class="categories">
 
-    <div class="categories">
-
-        <div class="category">
-            <span>🛍️</span>
-            Marketplace
-        </div>
-
-        <div class="category">
-            <span>📍</span>
-            Nearby
-        </div>
-
-        <div class="category">
-            <span>🎬</span>
-            Entertainment
-        </div>
-
-        <div class="category">
-            <span>🎵</span>
-            Music
-        </div>
-
-        <div class="category">
-            <span>💼</span>
-            Services
-        </div>
-
-        <div class="category">
-            <span>📺</span>
-            Live
-        </div>
-
-        <div class="category">
-            <span>💰</span>
-            Earn
-        </div>
-
-        <div class="category">
-            <span>🤝</span>
-            Community
-        </div>
-
+    <div class="category">
+      <h3>🛍️ Marketplace</h3>
+      <p>Find products</p>
     </div>
 
-</section>
-
-
-<section class="section">
-
-    <div class="nearby">
-
-        <h2>📍 Find What's Near You</h2>
-
-        <p>
-            Discover products, shops, restaurants, hotels,
-            services and entertainment around your location.
-        </p>
-
-        <button>
-            Explore Nearby
-        </button>
-
+    <div class="category">
+      <h3>📍 Nearby</h3>
+      <p>Find places near you</p>
     </div>
 
-</section>
+    <div class="category">
+      <h3>🎬 Entertainment</h3>
+      <p>Watch videos and movies</p>
+    </div>
 
+    <div class="category">
+      <h3>🎵 Music</h3>
+      <p>Discover artists</p>
+    </div>
+
+    <div class="category">
+      <h3>🔧 Services</h3>
+      <p>Find service providers</p>
+    </div>
+
+    <div class="category">
+      <h3>🔴 Live</h3>
+      <p>Watch live content</p>
+    </div>
+
+    <div class="category">
+      <h3>💰 Earn</h3>
+      <p>Creator opportunities</p>
+    </div>
+
+    <div class="category">
+      <h3>👥 Community</h3>
+      <p>Connect with people</p>
+    </div>
+
+  </div>
+</section>
 
 <section class="section">
+  <h2>One Platform For Everyone</h2>
 
-    <h2>One Platform For Everyone</h2>
-
-    <p>
-        HomeLink connects people, sellers, businesses,
-        creators, artists, service providers and customers
-        in one global platform.
-    </p>
-
+  <p>
+    HomeLink connects customers, sellers, businesses, creators,
+    restaurants, hotels, artists and service providers in one platform.
+  </p>
 </section>
 
+<!-- SIGN UP -->
+
+<div id="signupModal" class="modal">
+
+  <div class="modal-box">
+
+    <span class="close" onclick="closeModals()">×</span>
+
+    <h2>Create HomeLink Account</h2>
+
+    <input id="signupName" type="text" placeholder="Full name">
+
+    <input id="signupEmail" type="email" placeholder="Email address">
+
+    <input id="signupPhone" type="tel" placeholder="Phone number">
+
+    <select id="signupCountry">
+      <option value="">Select country</option>
+      <option>Ghana</option>
+      <option>Nigeria</option>
+      <option>Kenya</option>
+      <option>South Africa</option>
+      <option>Uganda</option>
+      <option>Tanzania</option>
+      <option>Rwanda</option>
+      <option>Egypt</option>
+      <option>United Kingdom</option>
+      <option>United States</option>
+      <option>Canada</option>
+      <option>Other</option>
+    </select>
+
+    <select id="accountType">
+      <option value="">Select account type</option>
+      <option>Personal User</option>
+      <option>Seller</option>
+      <option>Restaurant</option>
+      <option>Hotel</option>
+      <option>Filling Station</option>
+      <option>Pub / Entertainment</option>
+      <option>Artist</option>
+      <option>Movie Producer</option>
+      <option>Service Provider</option>
+      <option>Other Business</option>
+    </select>
+
+    <input id="signupPassword" type="password" placeholder="Password">
+
+    <button class="main-action" onclick="createAccount()">
+      Create Account
+    </button>
+
+    <div class="switch">
+      Already have an account?
+      <button onclick="switchToSignin()">Sign In</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- SIGN IN -->
+
+<div id="signinModal" class="modal">
+
+  <div class="modal-box">
+
+    <span class="close" onclick="closeModals()">×</span>
+
+    <h2>Sign In to HomeLink</h2>
+
+    <input id="signinEmail" type="email" placeholder="Email address">
+
+    <input id="signinPassword" type="password" placeholder="Password">
+
+    <button class="main-action" onclick="signIn()">
+      Sign In
+    </button>
+
+    <div class="switch">
+      Don't have an account?
+      <button onclick="switchToSignup()">Create Account</button>
+    </div>
+
+  </div>
+</div>
 
 <footer>
-
-    <p>© 2026 HomeLink. All rights reserved.</p>
-
+  <p>© 2026 HomeLink. All rights reserved.</p>
 </footer>
 
 
-<!-- SIGN UP MODAL -->
+<!-- SUPABASE -->
 
-<div class="modal" id="signupModal">
-
-    <div class="modal-box">
-
-        <span class="close" onclick="closeModals()">×</span>
-
-        <h2>Create HomeLink Account</h2>
-
-        <p>
-            Join HomeLink and connect with the world.
-        </p>
-
-        <form onsubmit="createAccount(event)">
-
-            <label>Full Name</label>
-            <input
-                type="text"
-                placeholder="Enter your full name"
-                required
-            >
-
-            <label>Email Address</label>
-            <input
-                type="email"
-                placeholder="Enter your email"
-                required
-            >
-
-            <label>Phone Number</label>
-            <input
-                type="tel"
-                placeholder="Enter your phone number"
-                required
-            >
-
-            <label>Country</label>
-
-            <select required>
-
-                <option value="">
-                    Select your country
-                </option>
-
-                <option>Ghana</option>
-                <option>Nigeria</option>
-                <option>Kenya</option>
-                <option>South Africa</option>
-                <option>Uganda</option>
-                <option>Tanzania</option>
-                <option>Rwanda</option>
-                <option>Egypt</option>
-                <option>United Kingdom</option>
-                <option>United States</option>
-                <option>Canada</option>
-                <option>Other</option>
-
-            </select>
-
-            <label>What do you do?</label>
-
-            <select required>
-
-                <option value="">
-                    Select your account type
-                </option>
-
-                <option>Personal User</option>
-                <option>Seller</option>
-                <option>Business</option>
-                <option>Restaurant</option>
-                <option>Hotel</option>
-                <option>Creator</option>
-                <option>Artist</option>
-                <option>Service Provider</option>
-                <option>Other</option>
-
-            </select>
-
-            <label>Password</label>
-
-            <input
-                type="password"
-                placeholder="Create a password"
-                required
-            >
-
-            <button
-                class="submit-button"
-                type="submit">
-                Create Account
-            </button>
-
-        </form>
-
-        <div class="switch">
-
-            Already have an account?
-
-            <button onclick="switchToSignin()">
-                Sign in
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- SIGN IN MODAL -->
-
-<div class="modal" id="signinModal">
-
-    <div class="modal-box">
-
-        <span class="close" onclick="closeModals()">×</span>
-
-        <h2>Sign in to HomeLink</h2>
-
-        <p>
-            Welcome back.
-        </p>
-
-        <form onsubmit="signIn(event)">
-
-            <label>Email or Phone</label>
-
-            <input
-                type="text"
-                placeholder="Enter your email or phone"
-                required
-            >
-
-            <label>Password</label>
-
-            <input
-                type="password"
-                placeholder="Enter your password"
-                required
-            >
-
-            <button
-                class="submit-button"
-                type="submit">
-                Sign In
-            </button>
-
-        </form>
-
-        <div class="switch">
-
-            Don't have an account?
-
-            <button onclick="switchToSignup()">
-                Create one
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-    function openModal(type) {
+  /*
+    IMPORTANT:
+    Replace the two values below.
 
-        closeModals();
+    1. YOUR_PROJECT_URL
+       Paste your Supabase Project URL.
 
-        if (type === "signup") {
-            document.getElementById("signupModal").style.display = "block";
+    2. YOUR_PUBLISHABLE_KEY
+       Paste your Supabase Publishable key.
+
+    NEVER put your Supabase SECRET KEY here.
+  */
+
+  const SUPABASE_URL = "YOUR_PROJECT_URL";
+  const SUPABASE_PUBLISHABLE_KEY = "YOUR_PUBLISHABLE_KEY";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+  function openSignup() {
+    document.getElementById("signupModal").style.display = "flex";
+    document.getElementById("signinModal").style.display = "none";
+  }
+
+
+  function openSignin() {
+    document.getElementById("signinModal").style.display = "flex";
+    document.getElementById("signupModal").style.display = "none";
+  }
+
+
+  function closeModals() {
+    document.getElementById("signupModal").style.display = "none";
+    document.getElementById("signinModal").style.display = "none";
+  }
+
+
+  function switchToSignin() {
+    openSignin();
+  }
+
+
+  function switchToSignup() {
+    openSignup();
+  }
+
+
+  async function createAccount() {
+
+    const name = document.getElementById("signupName").value.trim();
+    const email = document.getElementById("signupEmail").value.trim();
+    const phone = document.getElementById("signupPhone").value.trim();
+    const country = document.getElementById("signupCountry").value;
+    const accountType = document.getElementById("accountType").value;
+    const password = document.getElementById("signupPassword").value;
+
+    if (!name || !email || !password || !country || !accountType) {
+      alert("Please complete all required fields.");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters.");
+      return;
+    }
+
+    const { data, error } = await supabaseClient.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          full_name: name,
+          phone: phone,
+          country: country,
+          account_type: accountType
         }
+      }
+    });
 
-        if (type === "signin") {
-            document.getElementById("signinModal").style.display = "block";
-        }
+    if (error) {
+      alert("Sign up failed: " + error.message);
+      return;
     }
 
+    alert(
+      "Account created successfully! Check your email if email confirmation is required."
+    );
 
-    function closeModals() {
+    closeModals();
+  }
 
-        document.getElementById("signupModal").style.display = "none";
 
-        document.getElementById("signinModal").style.display = "none";
+  async function signIn() {
+
+    const email = document.getElementById("signinEmail").value.trim();
+    const password = document.getElementById("signinPassword").value;
+
+    if (!email || !password) {
+      alert("Please enter your email and password.");
+      return;
     }
 
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
 
-    function switchToSignin() {
-
-        closeModals();
-
-        openModal("signin");
+    if (error) {
+      alert("Sign in failed: " + error.message);
+      return;
     }
 
+    alert("Welcome back to HomeLink!");
 
-    function switchToSignup() {
-
-        closeModals();
-
-        openModal("signup");
-    }
-
-
-    function createAccount(event) {
-
-        event.preventDefault();
-
-        alert(
-            "Your HomeLink account form has been submitted. Real account storage will be connected when we add the HomeLink database."
-        );
-    }
-
-
-    function signIn(event) {
-
-        event.preventDefault();
-
-        alert(
-            "Sign-in form submitted. Real authentication will be connected when we add the HomeLink account system."
-        );
-    }
-
-
-    window.onclick = function(event) {
-
-        if (event.target.classList.contains("modal")) {
-            closeModals();
-        }
-
-    };
+    closeModals();
+  }
 
 </script>
 
