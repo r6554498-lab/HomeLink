@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>HomeLink</title>
 
     <style>
@@ -27,7 +26,7 @@
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 10;
+            z-index: 100;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
@@ -41,18 +40,19 @@
             gap: 8px;
         }
 
-        .auth-buttons a {
-            text-decoration: none;
-            padding: 10px 15px;
+        .auth-buttons button {
+            border: none;
+            padding: 10px 16px;
             border-radius: 20px;
+            cursor: pointer;
             font-weight: bold;
         }
 
-        .signin {
-            color: #111;
+        .signin-btn {
+            background: white;
         }
 
-        .signup {
+        .signup-btn {
             background: #111;
             color: white;
         }
@@ -60,11 +60,11 @@
         .hero {
             background: white;
             text-align: center;
-            padding: 45px 20px;
+            padding: 50px 20px;
         }
 
         .hero h1 {
-            font-size: 38px;
+            font-size: 40px;
             margin-bottom: 12px;
         }
 
@@ -158,6 +158,85 @@
             color: #666;
         }
 
+        /* POPUP */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 200;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-box {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .modal-box h2 {
+            margin-bottom: 10px;
+        }
+
+        .modal-box p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .submit-button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 14px;
+            border: none;
+            border-radius: 25px;
+            background: #111;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .switch {
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .switch button {
+            border: none;
+            background: none;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
         @media (max-width: 600px) {
 
             .hero h1 {
@@ -166,16 +245,16 @@
 
             .search {
                 flex-direction: column;
-                background: #f0f1f3;
+                border-radius: 15px;
             }
 
             .search button {
                 width: 100%;
             }
 
-            .auth-buttons a {
+            .auth-buttons button {
                 padding: 8px 10px;
-                font-size: 14px;
+                font-size: 13px;
             }
         }
     </style>
@@ -191,13 +270,17 @@
 
     <div class="auth-buttons">
 
-        <a href="signin.html" class="signin">
+        <button
+            class="signin-btn"
+            onclick="openModal('signin')">
             Sign in
-        </a>
+        </button>
 
-        <a href="signup.html" class="signup">
+        <button
+            class="signup-btn"
+            onclick="openModal('signup')">
             Sign up
-        </a>
+        </button>
 
     </div>
 
@@ -314,11 +397,246 @@
 
 <footer>
 
-    <p>
-        © 2026 HomeLink. All rights reserved.
-    </p>
+    <p>© 2026 HomeLink. All rights reserved.</p>
 
 </footer>
+
+
+<!-- SIGN UP MODAL -->
+
+<div class="modal" id="signupModal">
+
+    <div class="modal-box">
+
+        <span class="close" onclick="closeModals()">×</span>
+
+        <h2>Create HomeLink Account</h2>
+
+        <p>
+            Join HomeLink and connect with the world.
+        </p>
+
+        <form onsubmit="createAccount(event)">
+
+            <label>Full Name</label>
+            <input
+                type="text"
+                placeholder="Enter your full name"
+                required
+            >
+
+            <label>Email Address</label>
+            <input
+                type="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label>Phone Number</label>
+            <input
+                type="tel"
+                placeholder="Enter your phone number"
+                required
+            >
+
+            <label>Country</label>
+
+            <select required>
+
+                <option value="">
+                    Select your country
+                </option>
+
+                <option>Ghana</option>
+                <option>Nigeria</option>
+                <option>Kenya</option>
+                <option>South Africa</option>
+                <option>Uganda</option>
+                <option>Tanzania</option>
+                <option>Rwanda</option>
+                <option>Egypt</option>
+                <option>United Kingdom</option>
+                <option>United States</option>
+                <option>Canada</option>
+                <option>Other</option>
+
+            </select>
+
+            <label>What do you do?</label>
+
+            <select required>
+
+                <option value="">
+                    Select your account type
+                </option>
+
+                <option>Personal User</option>
+                <option>Seller</option>
+                <option>Business</option>
+                <option>Restaurant</option>
+                <option>Hotel</option>
+                <option>Creator</option>
+                <option>Artist</option>
+                <option>Service Provider</option>
+                <option>Other</option>
+
+            </select>
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                placeholder="Create a password"
+                required
+            >
+
+            <button
+                class="submit-button"
+                type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="switch">
+
+            Already have an account?
+
+            <button onclick="switchToSignin()">
+                Sign in
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SIGN IN MODAL -->
+
+<div class="modal" id="signinModal">
+
+    <div class="modal-box">
+
+        <span class="close" onclick="closeModals()">×</span>
+
+        <h2>Sign in to HomeLink</h2>
+
+        <p>
+            Welcome back.
+        </p>
+
+        <form onsubmit="signIn(event)">
+
+            <label>Email or Phone</label>
+
+            <input
+                type="text"
+                placeholder="Enter your email or phone"
+                required
+            >
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <button
+                class="submit-button"
+                type="submit">
+                Sign In
+            </button>
+
+        </form>
+
+        <div class="switch">
+
+            Don't have an account?
+
+            <button onclick="switchToSignup()">
+                Create one
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    function openModal(type) {
+
+        closeModals();
+
+        if (type === "signup") {
+            document.getElementById("signupModal").style.display = "block";
+        }
+
+        if (type === "signin") {
+            document.getElementById("signinModal").style.display = "block";
+        }
+    }
+
+
+    function closeModals() {
+
+        document.getElementById("signupModal").style.display = "none";
+
+        document.getElementById("signinModal").style.display = "none";
+    }
+
+
+    function switchToSignin() {
+
+        closeModals();
+
+        openModal("signin");
+    }
+
+
+    function switchToSignup() {
+
+        closeModals();
+
+        openModal("signup");
+    }
+
+
+    function createAccount(event) {
+
+        event.preventDefault();
+
+        alert(
+            "Your HomeLink account form has been submitted. Real account storage will be connected when we add the HomeLink database."
+        );
+    }
+
+
+    function signIn(event) {
+
+        event.preventDefault();
+
+        alert(
+            "Sign-in form submitted. Real authentication will be connected when we add the HomeLink account system."
+        );
+    }
+
+
+    window.onclick = function(event) {
+
+        if (event.target.classList.contains("modal")) {
+            closeModals();
+        }
+
+    };
+
+</script>
 
 </body>
 </html>
