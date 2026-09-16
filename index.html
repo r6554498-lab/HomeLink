@@ -410,50 +410,52 @@
     openSignup();
   }
 
+async function createAccount() {
+  const name = document.getElementById("signupName").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const phone = document.getElementById("signupPhone").value.trim();
+  const country = document.getElementById("signupCountry").value;
+  const accountType = document.getElementById("signupType").value;
+  const password = document.getElementById("signupPassword").value;
 
-  async function createAccount() {
+  if (!name || !email || !password) {
+    alert("Please fill in your name, email and password.");
+    return;
+  }
 
-    const name = document.getElementById("signupName").value.trim();
-    const email = document.getElementById("signupEmail").value.trim();
-    const phone = document.getElementById("signupPhone").value.trim();
-    const country = document.getElementById("signupCountry").value;
-    const accountType = document.getElementById("accountType").value;
-    const password = document.getElementById("signupPassword").value;
+  const { data, error } = await supabaseClient.auth.signUp({
+    email: email,
+    password: password
+  });
 
-    if (!name || !email || !password || !country || !accountType) {
-      alert("Please complete all required fields.");
-      return;
-    }
+  if (error) {
+    alert("Sign up failed: " + error.message);
+    return;
+  }
 
-    if (password.length < 6) {
-      alert("Password must be at least 6 characters.");
-      return;
-    }
+  const user = data.user;
 
-    const { data, error } = await supabaseClient.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        data: {
-          full_name: name,
-          phone: phone,
-          country: country,
-          account_type: accountType
-        }
-      }
+  if (!user) {
+    alert("Account created, but user information was not returned.");
+    return;
+  }
+
+  const { error: profileError } = await supabaseClient
+    .from("Profiles")
+    .insert({
+      user_id: user.id,
+      full_name: name
     });
 
-    if (error) {
-      alert("Sign up failed: " + error.message);
-      return;
-    }
-
-    alert(
-      "Account created successfully! Check your email if email confirmation is required."
-    );
-
-    closeModals();
+  if (profileError) {
+    alert("Account created, but profile could not be saved: " + profileError.message);
+    return;
   }
+
+  alert("Account created successfully!");
+
+  document.getElementById("signupModal").style.display = "none";
+}
 
 
   async function signIn() {
