@@ -592,15 +592,33 @@ async function openAccount() {
   const { data, error } = await supabaseClient.auth.getSession();
   if (error) {
     alert("Could not check your account.");
-    console.log(error.message);
     return;
   }
   const user = data.session?.user;
   if (!user) {
-    alert("Please sign in to view your account.");
+    alert("Please sign in first.");
     return;
   }
-  alert("You are signed in as: " + user.email);
+  document.getElementById("accountEmail").textContent = user.email;
+  const { data: profile, error: profileError } =
+    await supabaseClient
+      .from("Profiles")
+      .select("full_name, phone, country, account_type")
+      .eq("user_id", user.id)
+      .single();
+  if (profileError) {
+    alert("Could not load your profile: " + profileError.message);
+    return;
+  }
+  document.getElementById("accountName").textContent =
+    profile.full_name || "Not provided";
+  document.getElementById("accountPhone").textContent =
+    profile.phone || "Not provided";
+  document.getElementById("accountCountry").textContent =
+    profile.country || "Not provided";
+  document.getElementById("accountTypeDisplay").textContent =
+    profile.account_type || "Not provided";
+  document.getElementById("accountModal").style.display = "flex";
 }
 
 </script>
