@@ -798,6 +798,25 @@ async function loadProducts() {
 
 loadProducts();
 
+async function viewProduct(productId) {
+  const { data: product, error } = await supabaseClient
+    .from("products")
+    .select("*")
+    .eq("id", productId)
+    .single();
+
+  if (error) {
+    alert("Could not load product: " + error.message);
+    return;
+  }
+
+  alert(
+    "Product: " + product.product_name +
+    "\n\nDescription: " + (product.description || "No description") +
+    "\n\nPrice: " + product.price
+  );
+}
+
 </script>
 
 </body>
