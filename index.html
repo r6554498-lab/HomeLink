@@ -763,29 +763,34 @@ async function loadProducts() {
     return;
   }
 
-  productList.innerHTML = "";
+ productCard.innerHTML = `
+  ${
+    product.image_url
+      ? `<img src="${product.image_url}" style="width:100%; height:180px; object-fit:cover; border-radius:10px;">`
+      : ""
+  }
 
-  products.forEach((product) => {
-    const productCard = document.createElement("div");
+  <h3>${product.product_name}</h3>
 
-    productCard.style.padding = "15px";
-    productCard.style.border = "1px solid #ddd";
-    productCard.style.borderRadius = "12px";
-    productCard.style.background = "white";
+  <p>${product.description || ""}</p>
 
-    productCard.innerHTML = `
-      ${
-        product.image_url
-          ? `<img src="${product.image_url}" style="width:100%; height:180px; object-fit:cover; border-radius:10px;">`
-          : ""
-      }
+  <p>
+    <strong>Price: ${product.price}</strong>
+  </p>
 
-      <h3>${product.product_name}</h3>
-
-      <p>${product.description || ""}</p>
-
-      <strong>Price: ${product.price}</strong>
-    `;
+  <button
+    onclick="viewProduct('${product.id}')"
+    style="
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+    "
+  >
+    🛒 View Product
+  </button>
+`;
 
     productList.appendChild(productCard);
   });
