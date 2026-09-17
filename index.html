@@ -864,11 +864,16 @@ async function viewProduct(productId) {
     return;
   }
 
-  alert(
-    "Product: " + product.product_name +
-    "\n\nDescription: " + (product.description || "No description") +
-    "\n\nPrice: " + product.price
-  );
+  document.getElementById("productModalName").textContent =
+    product.product_name;
+
+  document.getElementById("productModalDescription").textContent =
+    product.description || "No description";
+
+  document.getElementById("productModalPrice").textContent =
+    product.price;
+
+  document.getElementById("productModal").style.display = "flex";
 }
 
 </script>
