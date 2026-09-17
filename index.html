@@ -270,6 +270,45 @@
 
 </section>
 
+<div id="productModal" style="
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+">
+
+  <div style="
+    background:white;
+    width:90%;
+    max-width:450px;
+    padding:25px;
+    border-radius:15px;
+    box-sizing:border-box;
+  ">
+
+    <h2 id="productModalName">Product</h2>
+
+    <p id="productModalDescription"></p>
+
+    <p>
+      <strong>Price:</strong>
+      <span id="productModalPrice"></span>
+    </p>
+
+    <button onclick="closeProductModal()">
+      Close
+    </button>
+
+  </div>
+
+</div>
+
 <section class="section">
   <h2>Explore HomeLink</h2>
 
