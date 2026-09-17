@@ -197,7 +197,7 @@
 </header>
 
 <section class="hero">
-  <h1>Welcome to HomeLink</h1>
+  <h1 id="welcomeMessage">Welcome to HomeLink</h1>
   <p>Marketplace, social network, entertainment and services — all in one place.</p>
 
   <input
@@ -498,6 +498,35 @@ async function checkUserSession() {
   }
 }
 checkUserSession();
+
+
+async function loadUserProfile() {
+  const { data: sessionData, error: sessionError } =
+    await supabaseClient.auth.getSession();
+  if (sessionError) {
+    console.log("Session error:", sessionError.message);
+    return;
+  }
+  const user = sessionData.session?.user;
+  if (!user) {
+    return;
+  }
+  const { data: profile, error: profileError } =
+    await supabaseClient
+      .from("Profiles")
+      .select("full_name")
+      .eq("user_id", user.id)
+      .single();
+  if (profileError) {
+    console.log("Profile error:", profileError.message);
+    return;
+  }
+  if (profile?.full_name) {
+    document.getElementById("welcomeMessage").textContent =
+      "Welcome, " + profile.full_name + "!";
+  }
+}
+loadUserProfile();
 
 </script>
 
