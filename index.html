@@ -483,6 +483,22 @@ async function createAccount() {
     closeModals();
   }
 
+
+async function checkUserSession() {
+  const { data, error } = await supabaseClient.auth.getSession();
+  if (error) {
+    console.log("Session check error:", error.message);
+    return;
+  }
+  const user = data.session?.user;
+  if (user) {
+    console.log("HomeLink user is logged in:", user.email);
+  } else {
+    console.log("No HomeLink user is logged in.");
+  }
+}
+checkUserSession();
+
 </script>
 
 </body>
