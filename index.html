@@ -531,16 +531,19 @@ async function loadUserProfile() {
 loadUserProfile();
 
 
-function openAccount() {
-  const { data } = supabaseClient.auth.getSession();
-  data.then(result => {
-    const user = result.data.session?.user;
-    if (!user) {
-      alert("Please sign in to view your account.");
-      return;
-    }
-    alert("You are signed in as: " + user.email);
-  });
+async function openAccount() {
+  const { data, error } = await supabaseClient.auth.getSession();
+  if (error) {
+    alert("Could not check your account.");
+    console.log(error.message);
+    return;
+  }
+  const user = data.session?.user;
+  if (!user) {
+    alert("Please sign in to view your account.");
+    return;
+  }
+  alert("You are signed in as: " + user.email);
 }
 
 </script>
