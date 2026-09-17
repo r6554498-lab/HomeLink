@@ -745,6 +745,54 @@ async function addProduct() {
   document.getElementById("productImage").value = "";
 }
 
+async function loadProducts() {
+  const { data: products, error } = await supabaseClient
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.log("Products error:", error.message);
+    return;
+  }
+
+  const productList = document.getElementById("productList");
+
+  if (!products || products.length === 0) {
+    productList.innerHTML = "<p>No products available yet.</p>";
+    return;
+  }
+
+  productList.innerHTML = "";
+
+  products.forEach((product) => {
+    const productCard = document.createElement("div");
+
+    productCard.style.padding = "15px";
+    productCard.style.border = "1px solid #ddd";
+    productCard.style.borderRadius = "12px";
+    productCard.style.background = "white";
+
+    productCard.innerHTML = `
+      ${
+        product.image_url
+          ? `<img src="${product.image_url}" style="width:100%; height:180px; object-fit:cover; border-radius:10px;">`
+          : ""
+      }
+
+      <h3>${product.product_name}</h3>
+
+      <p>${product.description || ""}</p>
+
+      <strong>Price: ${product.price}</strong>
+    `;
+
+    productList.appendChild(productCard);
+  });
+}
+
+loadProducts();
+
 </script>
 
 </body>
