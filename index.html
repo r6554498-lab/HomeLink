@@ -621,6 +621,20 @@ async function openAccount() {
   document.getElementById("accountModal").style.display = "flex";
 }
 
+function closeAccount() {
+  document.getElementById("accountModal").style.display = "none";
+}
+async function signOut() {
+  const { error } = await supabaseClient.auth.signOut();
+  if (error) {
+    alert("Sign out failed: " + error.message);
+    return;
+  }
+  document.getElementById("accountModal").style.display = "none";
+  alert("You have been signed out of HomeLink.");
+  window.location.reload();
+}
+
 </script>
 
 </body>
