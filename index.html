@@ -887,19 +887,11 @@ async function viewProduct(productId) {
   document.getElementById("productModalPrice").textContent =
     product.price;
 
-document.getElementById("addToCartButton").onclick = function () {
-  addToCart(product);
-};
+  document.getElementById("addToCartButton").onclick = function () {
+    addToCart(product);
+  };
 
   document.getElementById("productModal").style.display = "flex";
-}
-
-function closeProductModal() {
-  document.getElementById("productModal").style.display = "none";
-}
-
-function addToCart(product) {
-  alert(product.product_name + " has been added to your cart!");
 }
 
 </script>
