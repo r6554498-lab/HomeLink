@@ -758,39 +758,54 @@ async function loadProducts() {
 
   const productList = document.getElementById("productList");
 
+  if (!productList) {
+    console.log("Product list element not found.");
+    return;
+  }
+
   if (!products || products.length === 0) {
     productList.innerHTML = "<p>No products available yet.</p>";
     return;
   }
 
- productCard.innerHTML = `
-  ${
-    product.image_url
-      ? `<img src="${product.image_url}" style="width:100%; height:180px; object-fit:cover; border-radius:10px;">`
-      : ""
-  }
+  productList.innerHTML = "";
 
-  <h3>${product.product_name}</h3>
+  products.forEach((product) => {
+    const productCard = document.createElement("div");
 
-  <p>${product.description || ""}</p>
+    productCard.style.padding = "15px";
+    productCard.style.border = "1px solid #ddd";
+    productCard.style.borderRadius = "12px";
+    productCard.style.background = "white";
 
-  <p>
-    <strong>Price: ${product.price}</strong>
-  </p>
+    productCard.innerHTML = `
+      ${
+        product.image_url
+          ? `<img src="${product.image_url}" style="width:100%; height:180px; object-fit:cover; border-radius:10px;">`
+          : ""
+      }
 
-  <button
-    onclick="viewProduct('${product.id}')"
-    style="
-      width:100%;
-      padding:12px;
-      border:none;
-      border-radius:8px;
-      cursor:pointer;
-    "
-  >
-    🛒 View Product
-  </button>
-`;
+      <h3>${product.product_name}</h3>
+
+      <p>${product.description || ""}</p>
+
+      <p>
+        <strong>Price: ${product.price}</strong>
+      </p>
+
+      <button
+        onclick="viewProduct('${product.id}')"
+        style="
+          width:100%;
+          padding:12px;
+          border:none;
+          border-radius:8px;
+          cursor:pointer;
+        "
+      >
+        🛒 View Product
+      </button>
+    `;
 
     productList.appendChild(productCard);
   });
