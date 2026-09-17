@@ -679,6 +679,55 @@ async function signOut() {
   window.location.reload();
 }
 
+async function addProduct() {
+  const productName = document.getElementById("productName").value.trim();
+  const productDescription = document.getElementById("productDescription").value.trim();
+  const productPrice = document.getElementById("productPrice").value;
+  const productImage = document.getElementById("productImage").value.trim();
+
+  if (!productName || !productPrice) {
+    alert("Please enter the product name and price.");
+    return;
+  }
+
+  const { data: sessionData, error: sessionError } =
+    await supabaseClient.auth.getSession();
+
+  if (sessionError) {
+    alert("Could not check your account.");
+    return;
+  }
+
+  const user = sessionData.session?.user;
+
+  if (!user) {
+    alert("Please sign in before adding a product.");
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("products")
+    .insert({
+      seller_id: user.id,
+      product_name: productName,
+      description: productDescription,
+      price: Number(productPrice),
+      image_url: productImage
+    });
+
+  if (error) {
+    alert("Product could not be added: " + error.message);
+    return;
+  }
+
+  alert("Product added successfully!");
+
+  document.getElementById("productName").value = "";
+  document.getElementById("productDescription").value = "";
+  document.getElementById("productPrice").value = "";
+  document.getElementById("productImage").value = "";
+}
+
 </script>
 
 </body>
