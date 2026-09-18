@@ -1253,11 +1253,6 @@ async function placeOrder() {
     0
   );
 
-  // Create a unique payment reference
-  const reference =
-    "HL-" + Date.now() + "-" + Math.floor(Math.random() * 100000);
-
-  // Create the order first
   const { data: order, error } = await supabaseClient
     .from("orders")
     .insert({
@@ -1268,7 +1263,7 @@ async function placeOrder() {
       total_amount: total,
       status: "pending",
       payment_status: "pending",
-      payment_reference: reference
+      payment_reference: ""
     })
     .select()
     .single();
@@ -1278,7 +1273,6 @@ async function placeOrder() {
     return;
   }
 
-  // Save the products in the order
   const orderItems = shoppingCart.map((item) => ({
     order_id: order.id,
     product_id: item.id,
@@ -1300,46 +1294,21 @@ async function placeOrder() {
     return;
   }
 
-  // Get the customer's email
-  const email = user.email;
+  alert(
+    "Order created successfully!\n\n" +
+    "Order ID: " + order.id + "\n" +
+    "Total: " + total
+  );
 
-  if (!email) {
-    alert("Your account does not have an email address.");
-    return;
-  }
+  shoppingCart = [];
 
-  // Ask the secure Supabase Edge Function to initialize Paystack
-  const { data: paymentData, error: paymentError } =
-    await supabaseClient.functions.invoke("initialize-payment", {
-      body: {
-        email: email,
-        amount: total,
-        reference: reference
-      }
-    });
+  updateCartCount();
 
-  if (paymentError) {
-    alert("Payment could not be started: " + paymentError.message);
-    return;
-  }
+  document.getElementById("checkoutModal").style.display = "none";
 
-  if (!paymentData || !paymentData.status || !paymentData.data) {
-    alert(
-      "Paystack could not initialize the payment.\n\n" +
-      JSON.stringify(paymentData)
-    );
-    return;
-  }
-
-  const authorizationUrl = paymentData.data.authorization_url;
-
-  if (!authorizationUrl) {
-    alert("Paystack did not return a payment link.");
-    return;
-  }
-
-  // Open Paystack payment page
-  window.location.href = authorizationUrl;
+  document.getElementById("checkoutName").value = "";
+  document.getElementById("checkoutPhone").value = "";
+  document.getElementById("checkoutAddress").value = "";
 }
 
 loadProducts();
