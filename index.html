@@ -979,7 +979,9 @@ async function loadProducts() {
     .order("created_at", { ascending: false });
 
   if (error) {
-  alert("Products error: " + error.
+    console.log("Products error:", error.message);
+    return;
+  }
 
   const productList = document.getElementById("productList");
 
@@ -989,12 +991,9 @@ async function loadProducts() {
   }
 
   if (!products || products.length === 0) {
-  alert("Supabase returned 0 products.");
-  productList.innerHTML = "<p>No products available yet.</p>";
-  return;
-}
-
-alert("Supabase found " + products.length + " product(s).");
+    productList.innerHTML = "<p>No products available yet.</p>";
+    return;
+  }
 
   productList.innerHTML = "";
 
@@ -1037,48 +1036,6 @@ alert("Supabase found " + products.length + " product(s).");
 
     productList.appendChild(productCard);
   });
-}
-
-let shoppingCart = [];
-
-function addToCart(product) {
-  const existingItem = shoppingCart.find(
-    item => item.id === product.id
-  );
-
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    shoppingCart.push({
-      id: product.id,
-      product_name: product.product_name,
-      price: Number(product.price),
-      image_url: product.image_url,
-      seller_id: product.seller_id,
-      quantity: 1
-    });
-  }
-
-  updateCartCount();
-
-  alert(product.product_name + " has been added to your cart!");
-
-  console.log("HomeLink Cart:", shoppingCart);
-}
-
-function updateCartCount() {
-  const cartCount = document.getElementById("cartCount");
-
-  if (!cartCount) {
-    return;
-  }
-
-  const totalItems = shoppingCart.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
-
-  cartCount.textContent = totalItems;
 }
 
 async function viewProduct(productId) {
