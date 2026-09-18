@@ -980,9 +980,9 @@ async function loadProducts() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.log("Products error:", error.message);
-    return;
-  }
+  alert("Products error: " + error.message);
+  return;
+}
 
   const productList = document.getElementById("productList");
 
