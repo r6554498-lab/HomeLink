@@ -1024,7 +1024,7 @@ function renderCart() {
 
     const itemDiv = document.createElement("div");
 
-    itemDiv.style.padding = "12px 0";
+    itemDiv.style.padding = "15px 0";
     itemDiv.style.borderBottom = "1px solid #ddd";
 
     itemDiv.innerHTML = `
@@ -1032,17 +1032,91 @@ function renderCart() {
 
       <p>Price: ${item.price}</p>
 
-      <p>Quantity: ${item.quantity}</p>
+      <p>
+        Quantity:
+        <button
+          onclick="decreaseQuantity('${item.id}')"
+          style="padding:5px 10px; cursor:pointer;"
+        >
+          −
+        </button>
+
+        <strong style="margin:0 10px;">
+          ${item.quantity}
+        </strong>
+
+        <button
+          onclick="increaseQuantity('${item.id}')"
+          style="padding:5px 10px; cursor:pointer;"
+        >
+          +
+        </button>
+      </p>
 
       <p>
         <strong>Item total: ${itemTotal}</strong>
       </p>
+
+      <button
+        onclick="removeFromCart('${item.id}')"
+        style="
+          padding:8px 12px;
+          border:none;
+          border-radius:6px;
+          cursor:pointer;
+        "
+      >
+        🗑️ Remove
+      </button>
     `;
 
     cartItems.appendChild(itemDiv);
   });
 
   cartTotal.textContent = total;
+}
+
+function increaseQuantity(productId) {
+  const item = shoppingCart.find(
+    item => item.id === productId
+  );
+
+  if (item) {
+    item.quantity += 1;
+  }
+
+  updateCartCount();
+  renderCart();
+}
+
+function decreaseQuantity(productId) {
+  const item = shoppingCart.find(
+    item => item.id === productId
+  );
+
+  if (!item) {
+    return;
+  }
+
+  item.quantity -= 1;
+
+  if (item.quantity <= 0) {
+    shoppingCart = shoppingCart.filter(
+      item => item.id !== productId
+    );
+  }
+
+  updateCartCount();
+  renderCart();
+}
+
+function removeFromCart(productId) {
+  shoppingCart = shoppingCart.filter(
+    item => item.id !== productId
+  );
+
+  updateCartCount();
+  renderCart();
 }
 
 function closeCart() {
