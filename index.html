@@ -973,6 +973,13 @@ async function addProduct() {
 }
 
 async function loadProducts() {
+  const productList = document.getElementById("productList");
+
+  if (!productList) {
+    console.log("productList not found");
+    return;
+  }
+
   const { data: products, error } = await supabaseClient
     .from("products")
     .select("*")
@@ -980,13 +987,8 @@ async function loadProducts() {
 
   if (error) {
     console.log("Products error:", error.message);
-    return;
-  }
-
-  const productList = document.getElementById("productList");
-
-  if (!productList) {
-    console.log("Product list element not found.");
+    productList.innerHTML =
+      "<p>Unable to load products: " + error.message + "</p>";
     return;
   }
 
@@ -1008,7 +1010,8 @@ async function loadProducts() {
     productCard.innerHTML = `
       ${
         product.image_url
-          ? `<img src="${product.image_url}" style="width:100%; height:180px; object-fit:cover; border-radius:10px;">`
+          ? `<img src="${product.image_url}"
+              style="width:100%; height:180px; object-fit:cover; border-radius:10px;">`
           : ""
       }
 
@@ -1038,7 +1041,9 @@ async function loadProducts() {
   });
 }
 
-}
+window.addEventListener("load", function () {
+  loadProducts();
+});
 
 console.log("loadProducts function loaded");
 
