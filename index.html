@@ -1281,6 +1281,8 @@ async function placeOrder() {
 
   const user = sessionData.session.user;
 
+alert("Your HomeLink User ID is:\n" + user.id);
+
   const total = shoppingCart.reduce(
     (sum, item) => sum + (item.price * item.quantity),
     0
