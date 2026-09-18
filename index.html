@@ -1246,11 +1246,14 @@ async function checkoutCart() {
     0
   );
 
-  alert(
-    "Your order total is " +
-    total +
-    ". Checkout will be connected to payment next."
-  );
+  document.getElementById("checkoutTotal").textContent = total;
+
+  document.getElementById("cartModal").style.display = "none";
+  document.getElementById("checkoutModal").style.display = "flex";
+}
+
+function closeCheckout() {
+  document.getElementById("checkoutModal").style.display = "none";
 }
 
 </script>
