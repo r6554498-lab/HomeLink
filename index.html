@@ -694,10 +694,8 @@
     2. YOUR_PUBLISHABLE_KEY
        Paste your Supabase Publishable key.
 
-    NEVER put your Supabase SECRET KEY here.
-  */
-
-alert("HomeLink JavaScript is running");
+    NEVER put your Supabase SECRET KEY 
+    
   const SUPABASE_URL = "https://lrzrmnmxalfnjtqvuqqm.supabase.co";
   const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_5U-_whNCGYVqH5f-DdsFrw_Zm9t3A_k";
 const PAYSTACK_PUBLIC_KEY = pk_test_c5415260de1a1a3dfb2d8317df75ca2f7da4887f
@@ -981,11 +979,7 @@ async function loadProducts() {
     .order("created_at", { ascending: false });
 
   if (error) {
-  alert("Products error: " + error.message);
-  return;
-}
-
-alert("loadProducts is running");
+  alert("Products error: " + error.
 
   const productList = document.getElementById("productList");
 
