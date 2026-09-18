@@ -992,9 +992,12 @@ async function loadProducts() {
   }
 
   if (!products || products.length === 0) {
-    productList.innerHTML = "<p>No products available yet.</p>";
-    return;
-  }
+  alert("Supabase returned 0 products.");
+  productList.innerHTML = "<p>No products available yet.</p>";
+  return;
+}
+
+alert("Supabase found " + products.length + " product(s).");
 
   productList.innerHTML = "";
 
