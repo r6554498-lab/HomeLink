@@ -1053,9 +1053,17 @@ function addToCart(product) {
       product_name: product.product_name,
       price: Number(product.price),
       image_url: product.image_url,
+      seller_id: product.seller_id,
       quantity: 1
     });
   }
+
+  updateCartCount();
+
+  alert(product.product_name + " has been added to your cart!");
+
+  console.log("HomeLink Cart:", shoppingCart);
+}
 
   updateCartCount();
 
