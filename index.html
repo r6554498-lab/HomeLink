@@ -854,28 +854,6 @@ async function loadUserProfile() {
 }
 loadUserProfile();
 
-
-async function openAccount() {
-  alert("My Account button is working!");
-
-  const { data, error } = await supabaseClient.auth.getSession();
-
-  if (error) {
-    alert("Error: " + error.message);
-    return;
-  }
-
-  const user = data.session?.user;
-
-  if (!user) {
-    alert("Please sign in first.");
-    return;
-  }
-
-  alert("You are signed in as: " + user.email);
-}
-
-
 async function openAccount() {
   const { data, error } = await supabaseClient.auth.getSession();
   if (error) {
@@ -1043,8 +1021,6 @@ let shoppingCart = [];
 window.addEventListener("load", function () {
   loadProducts();
 });
-
-let shoppingCart = [];
 
 async function viewProduct(productId) {
   const { data: product, error } = await supabaseClient
