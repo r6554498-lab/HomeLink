@@ -1305,7 +1305,25 @@ async function placeOrder() {
     alert("Order could not be saved: " + error.message);
     return;
   }
+  
+const orderItems = shoppingCart.map((item) => ({
+  order_id: order.id,
+  product_id: item.id,
+  seller_id: item.seller_id,
+  product_name: item.product_name,
+  price: item.price,
+  quantity: item.quantity
+}));
 
+  const { error: itemsError } = await supabaseClient
+  .from("order_items")
+  .insert(orderItems);
+
+  if (itemsError) {
+    alert("Order was created, but the products could not be saved: " + itemsError.message);
+    return;
+  }
+  
   alert(
     "Order created successfully!\n\n" +
     "Order ID: " + order.id + "\n" +
