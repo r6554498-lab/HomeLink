@@ -1271,18 +1271,55 @@ async function placeOrder() {
     return;
   }
 
+  const { data: sessionData, error: sessionError } =
+    await supabaseClient.auth.getSession();
+
+  if (sessionError || !sessionData.session?.user) {
+    alert("Please sign in before placing an order.");
+    return;
+  }
+
+  const user = sessionData.session.user;
+
   const total = shoppingCart.reduce(
     (sum, item) => sum + (item.price * item.quantity),
     0
   );
 
+  const { data: order, error } = await supabaseClient
+    .from("orders")
+    .insert({
+      customer_id: user.id,
+      customer_name: name,
+      customer_phone: phone,
+      delivery_address: address,
+      total_amount: total,
+      status: "pending"
+    })
+    .select()
+    .single();
+
+  if (error) {
+    alert("Order could not be saved: " + error.message);
+    return;
+  }
+
   alert(
-    "Order details received!\n\n" +
-    "Customer: " + name + "\n" +
-    "Phone: " + phone + "\n" +
+    "Order created successfully!\n\n" +
+    "Order ID: " + order.id + "\n" +
     "Total: " + total + "\n\n" +
-    "Next we will connect real payment."
+    "Payment will be connected next."
   );
+
+  shoppingCart = [];
+
+  updateCartCount();
+
+  document.getElementById("checkoutModal").style.display = "none";
+
+  document.getElementById("checkoutName").value = "";
+  document.getElementById("checkoutPhone").value = "";
+  document.getElementById("checkoutAddress").value = "";
 }
 
 </script>
