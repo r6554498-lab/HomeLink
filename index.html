@@ -1290,6 +1290,11 @@ async function placeOrder() {
     0
   );
 
+  // Create a unique payment reference
+  const reference =
+    "HL-" + Date.now() + "-" + Math.floor(Math.random() * 100000);
+
+  // Create the order first
   const { data: order, error } = await supabaseClient
     .from("orders")
     .insert({
@@ -1300,7 +1305,7 @@ async function placeOrder() {
       total_amount: total,
       status: "pending",
       payment_status: "pending",
-      payment_reference: ""
+      payment_reference: reference
     })
     .select()
     .single();
@@ -1309,41 +1314,69 @@ async function placeOrder() {
     alert("Order could not be saved: " + error.message);
     return;
   }
-  
-const orderItems = shoppingCart.map((item) => ({
-  order_id: order.id,
-  product_id: item.id,
-  seller_id: item.seller_id,
-  product_name: item.product_name,
-  price: item.price,
-  quantity: item.quantity
-}));
+
+  // Save the products in the order
+  const orderItems = shoppingCart.map((item) => ({
+    order_id: order.id,
+    product_id: item.id,
+    seller_id: item.seller_id,
+    product_name: item.product_name,
+    price: item.price,
+    quantity: item.quantity
+  }));
 
   const { error: itemsError } = await supabaseClient
-  .from("order_items")
-  .insert(orderItems);
+    .from("order_items")
+    .insert(orderItems);
 
   if (itemsError) {
-    alert("Order was created, but the products could not be saved: " + itemsError.message);
+    alert(
+      "Order was created, but the products could not be saved: " +
+      itemsError.message
+    );
     return;
   }
-  
-  alert(
-    "Order created successfully!\n\n" +
-    "Order ID: " + order.id + "\n" +
-    "Total: " + total + "\n\n" +
-    "Payment will be connected next."
-  );
 
-  shoppingCart = [];
+  // Get the customer's email
+  const email = user.email;
 
-  updateCartCount();
+  if (!email) {
+    alert("Your account does not have an email address.");
+    return;
+  }
 
-  document.getElementById("checkoutModal").style.display = "none";
+  // Ask the secure Supabase Edge Function to initialize Paystack
+  const { data: paymentData, error: paymentError } =
+    await supabaseClient.functions.invoke("initialize-payment", {
+      body: {
+        email: email,
+        amount: total,
+        reference: reference
+      }
+    });
 
-  document.getElementById("checkoutName").value = "";
-  document.getElementById("checkoutPhone").value = "";
-  document.getElementById("checkoutAddress").value = "";
+  if (paymentError) {
+    alert("Payment could not be started: " + paymentError.message);
+    return;
+  }
+
+  if (!paymentData || !paymentData.status || !paymentData.data) {
+    alert(
+      "Paystack could not initialize the payment.\n\n" +
+      JSON.stringify(paymentData)
+    );
+    return;
+  }
+
+  const authorizationUrl = paymentData.data.authorization_url;
+
+  if (!authorizationUrl) {
+    alert("Paystack did not return a payment link.");
+    return;
+  }
+
+  // Open Paystack payment page
+  window.location.href = authorizationUrl;
 }
 
 </script>
