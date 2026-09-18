@@ -1297,7 +1297,7 @@ async function placeOrder() {
       total_amount: total,
       status: "pending",
       payment_status: "pending",
-      payment_reference: null
+      payment_reference: ""
     })
     .select()
     .single();
