@@ -1256,6 +1256,35 @@ function closeCheckout() {
   document.getElementById("checkoutModal").style.display = "none";
 }
 
+async function placeOrder() {
+  const name = document.getElementById("checkoutName").value.trim();
+  const phone = document.getElementById("checkoutPhone").value.trim();
+  const address = document.getElementById("checkoutAddress").value.trim();
+
+  if (!name || !phone || !address) {
+    alert("Please fill in your full name, phone number and delivery address.");
+    return;
+  }
+
+  if (shoppingCart.length === 0) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  const total = shoppingCart.reduce(
+    (sum, item) => sum + (item.price * item.quantity),
+    0
+  );
+
+  alert(
+    "Order details received!\n\n" +
+    "Customer: " + name + "\n" +
+    "Phone: " + phone + "\n" +
+    "Total: " + total + "\n\n" +
+    "Next we will connect real payment."
+  );
+}
+
 </script>
 
 </body>
