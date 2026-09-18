@@ -866,6 +866,30 @@ async function loadProducts() {
 
 loadProducts();
 
+let shoppingCart = [];
+
+function addToCart(product) {
+  const existingItem = shoppingCart.find(
+    item => item.id === product.id
+  );
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    shoppingCart.push({
+      id: product.id,
+      product_name: product.product_name,
+      price: Number(product.price),
+      image_url: product.image_url,
+      quantity: 1
+    });
+  }
+
+  alert(product.product_name + " has been added to your cart!");
+
+  console.log("HomeLink Cart:", shoppingCart);
+}
+
 async function viewProduct(productId) {
   const { data: product, error } = await supabaseClient
     .from("products")
