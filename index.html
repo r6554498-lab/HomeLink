@@ -1294,7 +1294,9 @@ async function placeOrder() {
       customer_phone: phone,
       delivery_address: address,
       total_amount: total,
-      status: "pending"
+      status: "pending",
+      payment_status: "pending",
+      paymrnt_reference: null
     })
     .select()
     .single();
