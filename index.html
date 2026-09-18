@@ -945,9 +945,26 @@ function addToCart(product) {
     });
   }
 
+  updateCartCount();
+
   alert(product.product_name + " has been added to your cart!");
 
   console.log("HomeLink Cart:", shoppingCart);
+}
+
+function updateCartCount() {
+  const cartCount = document.getElementById("cartCount");
+
+  if (!cartCount) {
+    return;
+  }
+
+  const totalItems = shoppingCart.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
+  cartCount.textContent = totalItems;
 }
 
 async function viewProduct(productId) {
