@@ -973,13 +973,6 @@ async function addProduct() {
 }
 
 async function loadProducts() {
-  const productList = document.getElementById("productList");
-
-  if (!productList) {
-    console.log("productList not found");
-    return;
-  }
-
   const { data: products, error } = await supabaseClient
     .from("products")
     .select("*")
@@ -987,17 +980,22 @@ async function loadProducts() {
 
   if (error) {
     console.log("Products error:", error.message);
-    productList.innerHTML =
-      "<p>Unable to load products: " + error.message + "</p>";
     return;
   }
+
+  const productList = document.getElementById("productList");
+
+  if (!productList) {
+    console.log("Product list element not found.");
+    return;
+  }
+
+  productList.innerHTML = "";
 
   if (!products || products.length === 0) {
     productList.innerHTML = "<p>No products available yet.</p>";
     return;
   }
-
-  productList.innerHTML = "";
 
   products.forEach((product) => {
     const productCard = document.createElement("div");
@@ -1010,8 +1008,7 @@ async function loadProducts() {
     productCard.innerHTML = `
       ${
         product.image_url
-          ? `<img src="${product.image_url}"
-              style="width:100%; height:180px; object-fit:cover; border-radius:10px;">`
+          ? `<img src="${product.image_url}" style="width:100%; height:180px; object-fit:cover; border-radius:10px;">`
           : ""
       }
 
@@ -1041,9 +1038,11 @@ async function loadProducts() {
   });
 }
 
+let shoppingCart = [];
+
 window.addEventListener("load", function () {
   loadProducts();
-}); 
+});
 
 let shoppingCart = [];
 
